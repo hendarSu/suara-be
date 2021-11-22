@@ -1,34 +1,57 @@
 {
-  "name": "jwt-express-typeorm",
-  "version": "0.0.1",
-  "description": "Awesome project developed with TypeORM.",
-  "devDependencies": {
-    "ts-node": "3.3.0",
-    "@types/node": "^8.0.29",
-    "typescript": "2.5.2"
-  },
-  "dependencies": {
-    "@types/bcryptjs": "^2.4.2",
-    "@types/body-parser": "^1.17.0",
-    "@types/cors": "^2.8.4",
-    "@types/helmet": "0.0.42",
-    "@types/jsonwebtoken": "^8.3.0",
-    "bcryptjs": "^2.4.3",
-    "body-parser": "^1.18.1",
-    "class-validator": "^0.9.1",
-    "cors": "^2.8.5",
-    "express": "^4.15.4",
-    "helmet": "^3.15.0",
-    "jsonwebtoken": "^8.4.0",
-    "reflect-metadata": "^0.1.10",
-    "sqlite3": "^4.0.3",
-    "ts-node-dev": "^1.0.0-pre.32",
-    "typeorm": "0.2.12"
-  },
-  "scripts": {
-    "tsc": "tsc",
-    "start": "set debug=* && ts-node-dev --respawn --transpileOnly ./src/index.ts",
-    "prod": "tsc && node ./build/app.js",
-    "migration:run": "ts-node ./node_modules/typeorm/cli.js migration:run"
-  }
+   "name": "suara-api",
+   "version": "0.0.1",
+   "description": "Awesome project developed with TypeORM.",
+   "devDependencies": {
+      "@types/crypto-js": "^3.1.47",
+      "@types/node": "^8.10.63",
+      "ts-node": "3.3.0",
+      "typeorm": "^0.2.41",
+      "typescript": "3.3.3333"
+   },
+   "dependencies": {
+      "@types/bcryptjs": "^2.4.2",
+      "@types/body-parser": "^1.17.1",
+      "@types/cors": "^2.8.6",
+      "@types/helmet": "0.0.44",
+      "@types/jsonwebtoken": "^8.3.4",
+      "@types/lodash": "^4.14.144",
+      "app-root-path": "^3.0.0",
+      "bcryptjs": "^2.4.3",
+      "body-parser": "^1.18.1",
+      "class-validator": "^0.10.1",
+      "cors": "^2.8.5",
+      "crypto-js": "^4.0.0",
+      "express": "^4.15.4",
+      "fast-safe-stringify": "^2.0.7",
+      "helmet": "^3.21.1",
+      "html-pdf": "^2.2.0",
+      "http-status-codes": "^2.1.2",
+      "jsonwebtoken": "^8.5.1",
+      "jwt-decode": "^3.0.0-beta.2",
+      "lodash": "^4.17.15",
+      "mysql": "^2.14.1",
+      "reflect-metadata": "^0.1.10",
+      "ts-node-dev": "^1.0.0-pre.43"
+   },
+   "scripts": {
+      "build": "tsc",
+      "start": "node --inspect=5858 -r ts-node/register src/index.ts",
+      "start:watch": "nodemon",
+      "prod": "tsc && node ./build/index.js",
+      "migration:run": "ts-node ./node_modules/typeorm/cli.js migration:run"
+   },
+   "nodemonConfig": {
+      "ignore": [
+         "**/*.test.ts",
+         "**/*.spec.ts",
+         ".git",
+         "node_modules"
+      ],
+      "watch": [
+         "src"
+      ],
+      "exec": "npm start",
+      "ext": "ts"
+   }
 }
