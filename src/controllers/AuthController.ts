@@ -5,7 +5,7 @@ import {
     StatusCodes
 } from 'http-status-codes';
 
-import { User } from "../entity/User";
+import { Users } from "../entity/User";
 import config from "../config/config";
 import { BaseResponseVm } from "../model/base-response-vm";
 import { ErrorResponse } from "../model/base-error-response";
@@ -21,8 +21,8 @@ class AuthController {
         }
         
         //Get user from database
-        const userRepository = getRepository(User);
-        let user: User;
+        const userRepository = getRepository(Users);
+        let user: Users;
         try {
             user = await userRepository.query(`SELECT * FROM users WHERE email = "${username}"`);
             if(!user) {
@@ -66,7 +66,7 @@ class AuthController {
 
     static generatePassword = async(req: Request, res: Response) => {
         const response = new BaseResponseVm();
-        const user = new User();
+        const user = new Users();
         response.data = await user.generatePassword(req.body.password);
         res.send(response);
     }

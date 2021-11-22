@@ -9,7 +9,7 @@ import * as bcrypt from "bcryptjs";
 
 @Entity()
 @Unique(["email"])
-export class User {
+export class Users {
     @PrimaryGeneratedColumn()
     _id: number;
 
