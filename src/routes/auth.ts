@@ -5,6 +5,7 @@ import { checkJwt } from "../middlewares/checkJwt";
 const router = Router();
 //Login route
 router.post("/login", AuthController.login);
-router.get("/user", AuthController.getPayload);
+router.get("/user",[checkJwt], AuthController.getPayload);
+router.post("/password-generate", AuthController.generatePassword);
 
 export default router;

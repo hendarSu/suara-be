@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import * as jwt from "jsonwebtoken";
 import { getRepository } from "typeorm";
-import { validate } from "class-validator";
 import {
     StatusCodes
 } from 'http-status-codes';
@@ -10,7 +9,7 @@ import { User } from "../entity/User";
 import config from "../config/config";
 import { BaseResponseVm } from "../model/base-response-vm";
 import { ErrorResponse } from "../model/base-error-response";
-import  * as crypto from 'crypto-js';
+import * as bcrypt from "bcryptjs";
 import * as jwtDecode from 'jwt-decode';
 
 class AuthController {
@@ -21,18 +20,20 @@ class AuthController {
             ErrorResponse.catch(res, StatusCodes.BAD_REQUEST, 'username and password is required');
         }
         
-        password = crypto.SHA256(password);
         //Get user from database
         const userRepository = getRepository(User);
         let user: User;
         try {
-            user = await userRepository.query(`CALL 300_report_login('${username}', '${password}')`);
-            
-            const loginData = user[0][0];
-            if (loginData.user_id) {
+            user = await userRepository.query(`SELECT * FROM users WHERE email = "${username}"`);
+            if(!user) {
+                ErrorResponse.catch(res, StatusCodes.UNAUTHORIZED, 'username not found!');
+            }
+        
+            if (await AuthController.validatePassword(password, user[0].password)) {
+                const loginData = user;
                 //Sing JWT, valid for 1 hour
                 const token = jwt.sign(
-                    { userId: loginData.user_id, userdata: loginData },
+                    { userId: loginData._id, userdata: loginData },
                     config.jwtSecret,
                     { expiresIn: "1d" }
                 );
@@ -42,7 +43,7 @@ class AuthController {
                 response.data = token;
                 res.send(response);
             } else {
-                ErrorResponse.catch(res, StatusCodes.UNAUTHORIZED, loginData.login_msg);
+                ErrorResponse.catch(res, StatusCodes.UNAUTHORIZED, 'passowd is worng!');
             }
         } catch (error) {
             ErrorResponse.catch(res, StatusCodes.UNAUTHORIZED, error);
@@ -58,5 +59,16 @@ class AuthController {
         response.data = dataUser.userdata;
         res.send(response);
     };
+
+    static validatePassword = async (password: string, hashPassword: string) => {
+        return bcrypt.compare(password, hashPassword);
+    };
+
+    static generatePassword = async(req: Request, res: Response) => {
+        const response = new BaseResponseVm();
+        const user = new User();
+        response.data = await user.generatePassword(req.body.password);
+        res.send(response);
+    }
 }
 export default AuthController;

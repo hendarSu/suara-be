@@ -8,7 +8,7 @@ import { Length, IsNotEmpty } from "class-validator";
 import * as bcrypt from "bcryptjs";
 
 @Entity()
-@Unique(["users"])
+@Unique(["email"])
 export class User {
     @PrimaryGeneratedColumn()
     _id: number;
@@ -28,7 +28,11 @@ export class User {
         this.password = bcrypt.hashSync(this.password, 8);
     }
 
-    checkIfUnencryptedPasswordIsValid(unencryptedPassword: string) {
-        return bcrypt.compareSync(unencryptedPassword, this.password);
+    async generatePassword(password: string): Promise<string> {
+        return bcrypt.hashSync(password, 8);
+    }
+
+    public checkIfUnencryptedPasswordIsValid(unencryptedPassword: string, hashPassword: string) {
+        return bcrypt.compareSync(unencryptedPassword, hashPassword);
     }
 }
