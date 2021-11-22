@@ -1,4 +1,4 @@
-# Ghani API
+# Suara BE
 
 Steps to run this project:
 
