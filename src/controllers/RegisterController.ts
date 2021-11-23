@@ -25,8 +25,7 @@ export class RegisterController {
     };
 
     static validateEmail = async (email: string, res: Response) => {
-        const user = getRepository(Users);
-        const userData = await user.query(`SELECT * FROM users WHERE email = "${email}"`);
+        const userData = await UserRepository.find({email: email});
         if(userData) {
             return ErrorResponse.catch(res, StatusCodes.BAD_REQUEST, 'username is already!');
         } 

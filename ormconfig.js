@@ -1,25 +1,11 @@
 module.exports = {
-   "type" : "mysql",
-   "host": "localhost",
-   "port": 3306,
-   "username": "root",
-   "password": "",
-   "database": "suara-be",
-   "synchronize": false,
-   "logging": false,
-   "entities": [
-      "./entity/*.ts",
-      "src/entity/*.ts"
-   ],
-   "migrations": [
-      "src/migration/**/*.ts"
-   ],
-   "subscribers": [
-      "src/subscriber/**/*.ts"
-   ],
-   "cli": {
-      "entitiesDir": "src/entity",
-      "migrationsDir": "src/migration",
-      "subscribersDir": "src/subscriber"
-   }
-}
+    "type" : "mongodb",
+    "url": "mongodb+srv://user1:explore123!@workshop.ag9bn.mongodb.net/suara-be?retryWrites=true&w=majority",
+    "useNewUrlParser": true,
+    "synchronize": false,
+    "logging": false,
+    "entities": [
+       "./entity/*.ts",
+       "src/entity/*.ts"
+    ]
+ }
